@@ -1,0 +1,29 @@
+# Products Demo (Android, Kotlin, Jetpack Compose)
+
+A two-screen app that fetches products from `https://dummyjson.com/products?limit=100` and:
+- Shows unique categories with thumbnail, product count, and total stock.
+- Navigates to a list of products in the selected category (name, image, price, stock).
+
+## Stack
+- Kotlin, Jetpack Compose, Navigation Compose
+- Retrofit + Moshi, OkHttp logging
+- Coil for images
+- (Optional) Room for offline cache
+
+## Getting Started
+1. Android Studio Iguana | 2023.2.1 Patch 1
+   AGP 8.3.1 | id 'com.android.application' version '8.7.0' | id 'org.jetbrains.kotlin.android' version '1.9.0'
+2. Add the project to my GIT Hub.
+3. Run on Android 14.0 (API 34)+.
+
+Using Gson (converter-gson:2.11.0)
+
+All network calls are wrapped with a typed error model.
+
+The UI shows a friendly error pane with
+
+## Structure
+com.example.sqlinkdigital
+data/models
+remote/
+ui/
