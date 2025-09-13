@@ -44,7 +44,7 @@ fun ErrorPane(
         Spacer(Modifier.height(16.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             Button(onClick = onRetry) { Text("Retry") }
-            OutlinedButton(onClick = { /* you can navigate to a help screen if you want */ }) { Text("Help") }
+            //OutlinedButton(onClick = { /* you can navigate to a help screen if you want */ }) { Text("Help") }
         }
     }
 }

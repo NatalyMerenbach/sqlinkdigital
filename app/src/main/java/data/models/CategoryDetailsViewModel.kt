@@ -18,7 +18,9 @@ class CategoryDetailsViewModel(
     private val _state = MutableStateFlow<UiState<List<Product>>>(UiState.Loading)
     val state: StateFlow<UiState<List<Product>>> = _state
 
-    init { load() }
+    init {
+        load()
+    }
 
     fun load() {
         _state.value = UiState.Loading
