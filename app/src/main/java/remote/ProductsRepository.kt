@@ -15,20 +15,36 @@ class ProductsRepository {
     private val api = NetworkModule.api
     private val parser = NetworkModule.errorParser
 
-    private suspend fun <T> io(block: suspend () -> T) =
+    /**
+     * Runs a suspend block on the IO dispatcher.
+     */
+    private suspend fun <T> io(block: suspend () -> T): T =
         withContext(Dispatchers.IO) { block() }
 
-    suspend fun fetchAllProducts(): RepoResult<List<Product>> = io {
-        val res = apiCall({ api.getProducts().products }, parser) // returns Result<T>
-        res.fold(
-            onSuccess = { RepoResult.Ok(it) },
-            onFailure = { err ->
-                val appErr = err as? AppError ?: AppError.Unknown(err.message)
-                RepoResult.Err(appErr)
+    /**
+     * Fetches all products from the API and converts the response into RepoResult.
+     */
+    private suspend fun fetchAllProducts(): RepoResult<List<Product>> = io {
+        // Call API safely (returns Result<T>)
+        val result: Result<List<Product>> = apiCall(
+            request = { api.getProducts().products },
+            errorParser = parser
+        )
+
+        // Convert Kotlin Result<T> into RepoResult<T>
+        result.fold(
+            onSuccess = { products ->
+                RepoResult.Ok(products)
+            },
+            onFailure = { throwable ->
+                val appError: AppError = when (throwable) {
+                    is AppError -> throwable
+                    else -> AppError.Unknown(throwable.message)
+                }
+                RepoResult.Err(appError)
             }
         )
     }
-
 
     /**
      * Fetches all products and transforms them into a list of CategoryInfo objects.
