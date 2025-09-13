@@ -18,3 +18,10 @@ data class Product(
     val thumbnail: String,
     val images: List<String> = emptyList()
 )
+
+data class CategoryInfo(
+    val name: String,
+    val firstThumbnail: String,
+    val productCount: Int,
+    val totalStock: Int
+)

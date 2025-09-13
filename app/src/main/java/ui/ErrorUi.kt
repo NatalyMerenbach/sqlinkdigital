@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
 fun errorMessageOf(error: AppError): String = when (error) {
-    is AppError.Http -> {
+    is AppError.HttpReasonError -> {
         val body = error.apiMessage?.takeIf { it.isNotBlank() }
         "Server error (${error.code})" +
                 (body?.let { ": $it" } ?: error.reason?.let { ": $it" }.orEmpty())

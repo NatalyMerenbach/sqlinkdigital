@@ -17,14 +17,16 @@ class CategoriesViewModel(
     private val _state = MutableStateFlow<UiState<List<CategoryInfo>>>(UiState.Loading)
     val state: StateFlow<UiState<List<CategoryInfo>>> = _state
 
-    init { refresh() }
+    init {
+        refresh()
+    }
 
     fun refresh() {
         _state.value = UiState.Loading
         viewModelScope.launch {
-            when (val r = repo.categories()) {
-                is RepoResult.Ok  -> _state.value = UiState.Success(r.data)
-                is RepoResult.Err -> _state.value = UiState.Error(r.error)
+            when (val result = repo.categories()) {
+                is RepoResult.Ok  -> _state.value = UiState.Success(result.data)
+                is RepoResult.Err -> _state.value = UiState.Error(result.error)
             }
         }
     }

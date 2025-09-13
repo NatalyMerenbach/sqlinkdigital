@@ -5,12 +5,6 @@ import remote.errors.apiCall
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-data class CategoryInfo(
-    val name: String,
-    val firstThumbnail: String,
-    val productCount: Int,
-    val totalStock: Int
-)
 
 sealed interface RepoResult<out T> {
     data class Ok<T>(val data: T) : RepoResult<T>
@@ -36,25 +30,25 @@ class ProductsRepository {
     }
 
 
-    suspend fun categories(): RepoResult<List<CategoryInfo>> = when (val r = fetchAllProducts()) {
+    suspend fun categories(): RepoResult<List<CategoryInfo>> = when (val result = fetchAllProducts()) {
         is RepoResult.Ok -> {
-            val all = r.data
-            val cats = all.groupBy { it.category }
-                .map { (cat, items) ->
+            val all = result.data
+            val categories = all.groupBy { it.category }
+                .map { (category, items) ->
                     CategoryInfo(
-                        name = cat,
+                        name = category,
                         firstThumbnail = items.firstOrNull()?.thumbnail.orEmpty(),
                         productCount = items.distinctBy { it.id }.size,
                         totalStock = items.sumOf { it.stock }
                     )
                 }.sortedBy { it.name }
-            RepoResult.Ok(cats)
+            RepoResult.Ok(categories)
         }
-        is RepoResult.Err -> r
+        is RepoResult.Err -> result
     }
 
-    suspend fun productsByCategory(category: String): RepoResult<List<Product>> = when (val r = fetchAllProducts()) {
-        is RepoResult.Ok -> RepoResult.Ok(r.data.filter { it.category == category })
-        is RepoResult.Err -> r
+    suspend fun productsByCategory(category: String): RepoResult<List<Product>> = when (val result = fetchAllProducts()) {
+        is RepoResult.Ok -> RepoResult.Ok(result.data.filter { it.category == category })
+        is RepoResult.Err -> result
     }
 }
