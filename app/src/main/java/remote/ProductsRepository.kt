@@ -30,22 +30,40 @@ class ProductsRepository {
     }
 
 
-    suspend fun categories(): RepoResult<List<CategoryInfo>> = when (val result = fetchAllProducts()) {
-        is RepoResult.Ok -> {
-            val all = result.data
-            val categories = all.groupBy { it.category }
-                .map { (category, items) ->
-                    CategoryInfo(
-                        name = category,
-                        firstThumbnail = items.firstOrNull()?.thumbnail.orEmpty(),
-                        productCount = items.distinctBy { it.id }.size,
-                        totalStock = items.sumOf { it.stock }
-                    )
-                }.sortedBy { it.name }
-            RepoResult.Ok(categories)
+    /**
+     * Fetches all products and transforms them into a list of CategoryInfo objects.
+     */
+    suspend fun fetchCategories(): RepoResult<List<CategoryInfo>> {
+        // Call another function that fetches all products
+        return when (val result = fetchAllProducts()) {
+
+            is RepoResult.Ok -> {
+                val products = result.data
+
+                // Group products by their category
+                val categories = products
+                    .groupBy { it.category }
+                    .map { (categoryName, categoryItems) ->
+
+                        // Create CategoryInfo for each category
+                        CategoryInfo(
+                            name = categoryName,
+                            thumbnail = categoryItems.firstOrNull()?.thumbnail.orEmpty(),
+                            productCount = categoryItems.distinctBy { it.id }.size,
+                            totalStock = categoryItems.sumOf { it.stock }
+                        )
+                    }
+                    // Sort categories alphabetically by name
+                    .sortedBy { it.name }
+
+                RepoResult.Ok(categories)
+            }
+
+            //Error case – just pass the error forward
+            is RepoResult.Err -> result
         }
-        is RepoResult.Err -> result
     }
+
 
     suspend fun productsByCategory(category: String): RepoResult<List<Product>> = when (val result = fetchAllProducts()) {
         is RepoResult.Ok -> RepoResult.Ok(result.data.filter { it.category == category })

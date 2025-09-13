@@ -98,7 +98,7 @@ private fun CategoryCard(info: CategoryInfo, onClick: () -> Unit) {
     ) {
         Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
             AsyncImage(
-                model = info.firstThumbnail,
+                model = info.thumbnail,
                 contentDescription = null,
                 modifier = Modifier.size(72.dp)
             )

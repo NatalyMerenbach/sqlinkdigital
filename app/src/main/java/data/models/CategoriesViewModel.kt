@@ -24,7 +24,7 @@ class CategoriesViewModel(
     fun refresh() {
         _state.value = UiState.Loading
         viewModelScope.launch {
-            when (val result = repo.categories()) {
+            when (val result = repo.fetchCategories()) {
                 is RepoResult.Ok  -> _state.value = UiState.Success(result.data)
                 is RepoResult.Err -> _state.value = UiState.Error(result.error)
             }

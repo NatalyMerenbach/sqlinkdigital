@@ -53,7 +53,7 @@ private fun ProductRow(p: Product) {
     Card {
         Row(Modifier.padding(12.dp)) {
             AsyncImage(
-                model = p.images.firstOrNull() ?: p.thumbnail,
+                model = p.thumbnail,
                 contentDescription = p.title,
                 modifier = Modifier.size(84.dp)
             )

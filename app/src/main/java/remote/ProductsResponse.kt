@@ -8,20 +8,15 @@ data class ProductsResponse(
 data class Product(
     val id: Int,
     val title: String,
-    val description: String?,
-    val price: Double,
-    val discountPercentage: Double?,
-    val rating: Double?,
-    val stock: Int,
-    val brand: String?,
     val category: String,
+    val price: Double,
+    val stock: Int,
     val thumbnail: String,
-    val images: List<String> = emptyList()
 )
 
 data class CategoryInfo(
     val name: String,
-    val firstThumbnail: String,
+    val thumbnail: String,
     val productCount: Int,
     val totalStock: Int
 )
