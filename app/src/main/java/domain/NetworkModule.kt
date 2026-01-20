@@ -1,8 +1,8 @@
-package remote
+package domain
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import remote.errors.ApiErrorParser
+import data.errors.ApiErrorParser
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

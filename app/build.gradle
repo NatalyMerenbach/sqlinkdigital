@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.sqlinkdigital'
+    namespace 'com.example.newProject'
     compileSdk 35
 
     defaultConfig {
-        applicationId 'com.example.sqlinkdigital'
+        applicationId 'com.example.newproject'
         minSdk 27
         targetSdk 34
         versionCode 1

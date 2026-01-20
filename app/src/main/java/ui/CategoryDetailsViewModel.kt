@@ -1,18 +1,19 @@
-package data.models
-
-import remote.ProductsRepository
-import remote.RepoResult
+package ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import remote.Product
+import data.models.ProductsRepositoryImpl
+import ui.UiState
+import domain.Product
+import domain.ProductsRepository
+import domain.RepoResult
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class CategoryDetailsViewModel(
     private val category: String,
-    private val repo: ProductsRepository = ProductsRepository()
+    private val repo: ProductsRepository = ProductsRepositoryImpl()
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<UiState<List<Product>>>(UiState.Loading)

@@ -1,4 +1,4 @@
-package com.example.sqlinkdigital
+package com.example.newProject
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,36 +8,21 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import ui.MainNavigation
-import ui.theme.SqlinkDigitalTheme
+import ui.MainNavigation2
+import ui.theme.NewProjectTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            SqlinkDigitalTheme {
+            NewProjectTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainNavigation()
+                    MainNavigation2()
                 }
             }
         }
     }
 }
-//
-//@Composable
-//fun Greeting(name: String, modifier: Modifier = Modifier) {
-//    Text(
-//        text = "Hello $name!",
-//        modifier = modifier
-//    )
-//}
-
-//@Preview(showBackground = true)
-//@Composable
-//fun GreetingPreview() {
-//    SqlinkDigitalTheme {
-//        Greeting("Android")
-//    }
-//}

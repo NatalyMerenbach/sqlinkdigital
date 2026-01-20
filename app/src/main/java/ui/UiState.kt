@@ -1,6 +1,6 @@
-package data.models
+package ui
 
-import remote.errors.AppError
+import data.errors.AppError
 
 sealed interface UiState<out T> {
     data object Loading : UiState<Nothing>

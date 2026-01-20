@@ -1,6 +1,6 @@
 package ui
 
-import remote.errors.AppError
+import data.errors.AppError
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*

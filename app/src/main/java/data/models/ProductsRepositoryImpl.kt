@@ -1,17 +1,18 @@
-package remote
+package data.models
 
-import remote.errors.AppError
-import remote.errors.apiCall
+import domain.CategoryInfo
+import domain.NetworkModule
+import domain.Product
+import domain.RepoResult
+import data.errors.AppError
+import data.errors.apiCall
+import domain.ProductsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 
-sealed interface RepoResult<out T> {
-    data class Ok<T>(val data: T) : RepoResult<T>
-    data class Err(val error: AppError) : RepoResult<Nothing>
-}
 
-class ProductsRepository {
+class ProductsRepositoryImpl : ProductsRepository {
     private val api = NetworkModule.api
     private val parser = NetworkModule.errorParser
 
@@ -24,7 +25,7 @@ class ProductsRepository {
     /**
      * Fetches all products from the API and converts the response into RepoResult.
      */
-    private suspend fun fetchAllProducts(): RepoResult<List<Product>> = io {
+    override suspend fun fetchAllProducts(): RepoResult<List<Product>> = io {
         // Call API safely (returns Result<T>)
         val result: Result<List<Product>> = apiCall(
             request = { api.getProducts().products },
@@ -49,7 +50,7 @@ class ProductsRepository {
     /**
      * Fetches all products and transforms them into a list of CategoryInfo objects.
      */
-    suspend fun fetchCategories(): RepoResult<List<CategoryInfo>> {
+    override suspend fun fetchCategories(): RepoResult<List<CategoryInfo>> {
         // Call another function that fetches all products
         return when (val result = fetchAllProducts()) {
 
@@ -81,7 +82,7 @@ class ProductsRepository {
     }
 
 
-    suspend fun productsByCategory(category: String): RepoResult<List<Product>> = when (val result = fetchAllProducts()) {
+    override suspend fun productsByCategory(category: String): RepoResult<List<Product>> = when (val result = fetchAllProducts()) {
         is RepoResult.Ok -> RepoResult.Ok(result.data.filter { it.category == category })
         is RepoResult.Err -> result
     }

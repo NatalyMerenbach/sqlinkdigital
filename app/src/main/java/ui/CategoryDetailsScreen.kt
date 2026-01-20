@@ -1,36 +1,69 @@
 package ui
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import data.models.CategoryDetailsViewModel
-import remote.Product
+import domain.Product
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryDetailsScreen(
     category: String,
+    onBack: () -> Unit
 ) {
     val categoryDetailsViewModel = remember(category) { CategoryDetailsViewModel(category) }
     val state by categoryDetailsViewModel.state.collectAsState()
 
-    Scaffold(topBar = { TopAppBar(title = { Text(category) }) }) { padding ->
-        Box(Modifier.fillMaxSize().padding(padding)) {
+    Scaffold(topBar = {
+        TopAppBar(title = { Text(category) }, navigationIcon = {
+            IconButton(onClick = onBack) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back"
+                )
+            }
+        })
+    }) { padding ->
+        Box(Modifier
+            .fillMaxSize()
+            .padding(padding)) {
             when (val s = state) {
-                is data.models.UiState.Error ->  ErrorPane(
+                is UiState.Error -> ErrorPane(
                     error = s.error,
                     onRetry = categoryDetailsViewModel::load,
                     modifier = Modifier.align(Alignment.Center)
                 )
-                is data.models.UiState.Loading -> CircularProgressIndicator(Modifier.align(Alignment.Center))
-                is data.models.UiState.Success -> ProductList(s.data)
+
+                is UiState.Loading -> CircularProgressIndicator(Modifier.align(Alignment.Center))
+                is UiState.Success -> ProductList(s.data)
             }
         }
     }

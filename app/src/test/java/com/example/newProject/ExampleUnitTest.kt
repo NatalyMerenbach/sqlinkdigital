@@ -1,4 +1,4 @@
-package com.example.sqlinkdigital
+package com.example.newProject
 
 import org.junit.Test
 

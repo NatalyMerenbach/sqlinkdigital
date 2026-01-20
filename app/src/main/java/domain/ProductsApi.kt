@@ -1,4 +1,4 @@
-package remote
+package domain
 
 
 import retrofit2.http.GET

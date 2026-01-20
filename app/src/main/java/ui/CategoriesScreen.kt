@@ -37,9 +37,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import data.models.CategoriesViewModel
-import data.models.UiState
-import remote.CategoryInfo
+import ui.CategoriesViewModel
+import ui.UiState
+import domain.CategoryInfo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
